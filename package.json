@@ -1,0 +1,31 @@
+{
+  "name": "boats-task",
+  "version": "1.0.0",
+  "description": "practice task",
+  "homepage": "https://github.com/abdullahwebdev9176/boats-task#readme",
+  "bugs": {
+    "url": "https://github.com/abdullahwebdev9176/boats-task/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdullahwebdev9176/boats-task.git"
+  },
+  "license": "ISC",
+  "author": "Muhammad Abdullah",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "node": "node app.js",
+    "nodemon": "nodemon app.js"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-handlebars": "^8.0.6",
+    "hbs": "^4.2.0",
+    "mongodb": "^7.1.0",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {}
+}
