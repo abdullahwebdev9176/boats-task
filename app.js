@@ -1,13 +1,39 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const path = require('path');
+const handlebars = require('express-handlebars');
+const helpers = require('./helpers/hbs-helpers');
+const routes = require('./routes/index');
+
 
 dotenv.config();
 const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+const staticPath = path.join(__dirname, 'public');
+const partialsPath = path.join(__dirname, 'views/partials');
+const layoutsPath = path.join(__dirname, 'views/layouts');
+const frontendPages = path.join(__dirname, 'views/frontend-pages');
+
+console.log('Path:', staticPath);
+
+app.engine('hbs', handlebars.engine({
+    extname: 'hbs',
+    defaultLayout: 'layout',
+    layoutsDir: layoutsPath,
+    partialsDir: partialsPath,
+    helpers: helpers
+}))
+
+app.use(express.static(staticPath));
+app.use(express.json());
+
+app.set('view engine', 'hbs');
+app.set('views', frontendPages);
+
+// routes 
+
+app.use('/', routes)
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
