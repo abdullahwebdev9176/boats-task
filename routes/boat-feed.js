@@ -16,6 +16,7 @@ const runFeed = async () => {
         console.log(parserResult);
 
         const boatsArray = [];
+        const soldBoatsArray = [];
 
         for (const boat of parserResult.inventory.item) {
 
@@ -31,6 +32,8 @@ const runFeed = async () => {
             const product_images = inventory_images.length > 0 ? inventory_images[0] : [];
 
             // console.log(boat);
+
+            
 
             const boatData = {
                 id: boat.id,
@@ -51,11 +54,15 @@ const runFeed = async () => {
                 boat_images: inventory_images
             }
 
-            boatsArray.push(boatData);
-
+            if(boat.sale_status.toLowerCase().includes('sold')) {
+                soldBoatsArray.push(boatData);
+            }else {
+                boatsArray.push(boatData);
+            }
         }
 
         console.log(boatsArray.length);
+        console.log(soldBoatsArray.length);
 
         const db = getDB();
 
@@ -66,7 +73,8 @@ const runFeed = async () => {
         return {
             deletedBoats: deletedBoats,
             insertedBoats: insertedBoats,
-            boatsArray: boatsArray
+            boatsArray: boatsArray,
+            soldBoatsArray: soldBoatsArray
         }
 
 
