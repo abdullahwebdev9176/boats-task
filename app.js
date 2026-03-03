@@ -5,6 +5,7 @@ const path = require('path');
 const handlebars = require('express-handlebars');
 const helpers = require('./helpers/hbs-helpers');
 const routes = require('./routes/index');
+const feedRoute = require('./routes/boat-feed');
 
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.set('views', frontendPages);
 // routes 
 
 app.use('/', routes)
+app.use('/api', feedRoute)
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

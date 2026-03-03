@@ -1,0 +1,69 @@
+const axios = require('axios');
+const express = require('express');
+const router = express.Router();
+const xml2js = require('xml2js');
+
+
+const runFeed = async() =>{
+    try {
+        const reponse = await axios.get('https://callersiq.com/cali_marine_huntington_beach_xml_feed');
+
+        const xmlData = reponse.data;
+
+        const parser = new xml2js.Parser({explicitArray: false});
+        const parserResult = await parser.parseStringPromise(xmlData);
+        console.log(parserResult);
+
+        const boatsArray = [];
+
+        for (const boat of parserResult.inventory.item) {
+
+            const initialBoatTitle = boat.year + ' ' + boat.make + ' ' + boat.model;
+
+            const splittedTitle = initialBoatTitle.split(' ');
+            
+            const BoatTitle = splittedTitle.map((word)=>{
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            }).join(' ');
+
+            const inventory_images = Object.values(boat.inventory_images ? boat.inventory_images: {});
+            const product_images = inventory_images.length > 0 ? inventory_images[0] : [];
+
+            // console.log(boat);
+
+            const boatData = {
+                id: boat.id,
+                BoatTitle: BoatTitle,
+                product_images: product_images,
+                year: boat.year,
+                make: boat.make,
+                model: boat.model,
+                series: boat.series,
+                price: boat.price,
+                description: boat.description,
+                condition: boat.condition,
+                stock_number: boat.stock_number,
+                class: boat.class,
+                length: boat.length,
+                category: boat.category,
+                telephone: boat.telephone,
+                boat_images: inventory_images
+            }
+
+            boatsArray.push(boatData);
+
+        }
+
+        console.log(boatsArray.length);
+
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+router.get('/run-feed', async (req, res) => {
+    await runFeed();
+});
+
+module.exports = router;
