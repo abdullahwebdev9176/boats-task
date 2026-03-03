@@ -6,6 +6,9 @@ const handlebars = require('express-handlebars');
 const helpers = require('./helpers/hbs-helpers');
 const routes = require('./routes/index');
 const feedRoute = require('./routes/boat-feed');
+const {connectDB} = require('./config/db');
+
+connectDB();
 
 
 dotenv.config();
