@@ -1,0 +1,183 @@
+<div class="inventory-sec">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4">
+                <div class="boats-sidebar">
+                    <h3>Boat Filters</h3>
+
+                    <div id="selected-filters-section" style="display: none;">
+                        <ul class="selected-filter-wrapper" id="selected-filters">
+                        </ul>
+                    </div>
+
+                    <div class="filter-condition mb-3">
+                        <div class="boat-search-wrapper">
+                            <input type="text" id="boatSearch" placeholder="Boat Search">
+                        </div>
+                    </div>
+
+                    <!-- Condition -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Condition</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper">
+                            <label>
+                                <input type="checkbox" id="condition-all" value="all" onclick="handleConditionClick(event)">
+                                All
+                            </label>
+                            <label>
+                                <input type="checkbox" class="condition-item" value="New" onclick="handleConditionClick(event)">
+                                New
+                            </label>
+                            <label>
+                                <input type="checkbox" class="condition-item" value="Used" onclick="handleConditionClick(event)">
+                                Used
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Brand -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Brand</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper" id="brand-list">
+                            <label>
+                                <input type="checkbox" class="brand-item" value="Yamaha" onclick="handleBrandClick(event)"> Yamaha
+                            </label>
+                            <label>
+                                <input type="checkbox" class="brand-item" value="Bayliner" onclick="handleBrandClick(event)"> Bayliner
+                            </label>
+                            <label>
+                                <input type="checkbox" class="brand-item" value="Sea Ray" onclick="handleBrandClick(event)"> Sea Ray
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Series -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Series</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper" id="series-list">
+                            <label>
+                                <input type="checkbox" class="series-item" value="Sport" onclick="handleSeriesClick(event)"> Sport
+                            </label>
+                            <label>
+                                <input type="checkbox" class="series-item" value="Cruiser" onclick="handleSeriesClick(event)"> Cruiser
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Models -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Models</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper" id="model-list">
+                            <label>
+                                <input type="checkbox" class="model-item" value="X100" onclick="handleModelClick(event)"> X100
+                            </label>
+                            <label>
+                                <input type="checkbox" class="model-item" value="X200" onclick="handleModelClick(event)"> X200
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Length -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Length</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper">
+                            <div class="filter-range">
+                                <div class="range-slide-prices">
+                                    <span id="minVal" data-minlength="10">10</span>
+                                    <span id="maxVal" data-maxlength="40">40</span>
+                                </div>
+                                <div id="rangeSlider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Year -->
+                    <div class="filter-condition mb-3">
+                        <div class="filter-title">
+                            <h4>Year</h4>
+                            <span class="fa fa-plus"></span>
+                        </div>
+
+                        <div class="filter-content-wrapper">
+                            <div class="filter-range">
+                                <div class="range-slide-prices">
+                                    <span id="minYearVal" data-minyear="2015">2015</span>
+                                    <span id="maxYearVal" data-maxyear="2024">2024</span>
+                                </div>
+                                <div id="yearRangeSlider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-btns">
+                        <button class="mb-2" id="reset-filters" onclick="resetFilters()">Reset Filters</button>
+                        <p id="boat-count">12 boats found</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Boat Listings -->
+            <div class="col-xl-9 col-lg-8">
+                <div class="sort-by-filter-wrapper">
+                    <select id="sortBy">
+                        <option value="">Sort By</option>
+                        <option value="price_low_high">Price: Low to High</option>
+                        <option value="price_high_low">Price: High to Low</option>
+                        <option value="length_low_high">Length: Low to High</option>
+                        <option value="length_high_low">Length: High to Low</option>
+                    </select>
+                </div>
+
+                <div class="row" id="boat-listings">
+                    
+                    <!-- Static Boat Card 1 -->
+                    <div class="col-md-4">
+                        <div class="boat-card">
+                            <h5>Yamaha X100</h5>
+                            <p>Length: 20 ft</p>
+                            <p>Year: 2022</p>
+                            <p>Price: $25,000</p>
+                        </div>
+                    </div>
+
+                    <!-- Static Boat Card 2 -->
+                    <div class="col-md-4">
+                        <div class="boat-card">
+                            <h5>Sea Ray Cruiser</h5>
+                            <p>Length: 30 ft</p>
+                            <p>Year: 2021</p>
+                            <p>Price: $45,000</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="load-more-wrapper text-center my-5">
+                    <button id="load-more" class="btn btn-primary" onclick="loadMoreBoats()">Load More</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

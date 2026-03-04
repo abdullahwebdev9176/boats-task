@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+.boat-search-wrapper input{
+     width: 100%;
+     padding: 10px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+}
+
+.title-heading {
+    text-align: center;
+}
+
+.home-slider .item {
+    position: relative;
+    padding-top: 45%;
+}
+
+.home-slider .item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.boats-image {
+    position: relative;
+    padding-top: 60%;
+}
+
+.boats-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.boat-card-body {
+    padding: 15px 0;
+}
+
+.boat-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    font-family: "Inter", sans-serif;
+}
+
+.boat-card-title a {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.boat-card-title a:hover {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.boat-card-price {
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+    font-family: "Inter", sans-serif;
+}
+
+.filter-content-wrapper label {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    font-family: "Inter", sans-serif;
+    margin: 5px 0;
+    cursor: pointer;
+    display: block;
+}
+
+.filter-content-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 7px 0;
+}
+
+.inventory-sec {
+    padding-top: 100px;
+    width: calc(100% - 15%);
+    margin: 0 auto;
+}
+
+.filter-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: lightgray;
+    padding: 12px 12px;
+}
+
+.filter-title h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: black;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 0;
+}
+.filter-content-wrapper {
+    display: none;
+    padding-left: 10px;
+}
+.bottom-btns{
+    margin-top: 15px;
+}
+.bottom-btns button, .bottom-btns p{
+    padding: 12px 20px;
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: normal;
+    font-weight: 600;
+    display: block;
+    font-family: "Inter", sans-serif;
+    background: black;
+    color: white;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+}
+/* filter range slider  */
+
+.filter-range {
+    width: 75%;
+    margin: auto;
+}
+
+.ui-slider-horizontal .ui-slider-range {
+    background: #000;
+    height: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+    outline: 0 !important;
+    border: 1px solid #4d4d4d;
+    border-radius: 0;
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    transform: translateY(-45%);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+    outline: 0 !important;
+    border: 1px solid #4d4d4d;
+    border-radius: 0;
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    transform: translateY(-45%);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.filter-range input {
+    width: 100%;
+    text-align: center;
+    color: #222;
+    text-align: center;
+    font-family: 'acumin-light' !important;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400 !important;
+    line-height: normal;
+    letter-spacing: -0.32px;
+}
+
+.range-slide-prices {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.sort-by-filter-wrapper{
+    max-width: 350px;
+    margin: 0 0 20px auto;
+}
+.sort-by-filter-wrapper select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.card-specs{
+    display: flex;
+    padding-left: 0;
+    margin-bottom: 5px;
+}
+.card-specs .specs-item {
+    list-style: none;
+    padding-right: 20px;
+    position: relative;
+}
+.specs-item + .specs-item::before {
+    content: "";
+    width: 1px;
+    height: 15px;
+    background: #ccc;
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+}
+.selected-filter-wrapper{
+    padding-left: 0;
+}
+.selected-filter-wrapper li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 5px 10px;
+}
+.close-filter{
+    cursor: pointer;
+}

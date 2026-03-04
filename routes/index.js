@@ -11,4 +11,15 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:page', (req, res) => {
+
+    const page = type_based_page(req.params.page);
+
+
+    res.render('boats', { 
+        title: 'Boats',
+        page: page
+    });
+});
+
 module.exports = router;
