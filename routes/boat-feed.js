@@ -31,13 +31,12 @@ const runFeed = async () => {
             const inventory_images = Object.values(boat.inventory_images ? boat.inventory_images : {});
             const product_images = inventory_images.length > 0 ? inventory_images[0] : [];
 
-            // console.log(boat);
-
             
 
             const boatData = {
                 id: boat.id,
                 BoatTitle: BoatTitle,
+                condition: boat.condition,
                 product_images: product_images,
                 year: boat.year,
                 make: boat.make,

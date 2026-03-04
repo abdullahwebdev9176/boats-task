@@ -151,25 +151,9 @@
 
                 <div class="row" id="boat-listings">
                     
-                    <!-- Static Boat Card 1 -->
-                    <div class="col-md-4">
-                        <div class="boat-card">
-                            <h5>Yamaha X100</h5>
-                            <p>Length: 20 ft</p>
-                            <p>Year: 2022</p>
-                            <p>Price: $25,000</p>
-                        </div>
-                    </div>
-
-                    <!-- Static Boat Card 2 -->
-                    <div class="col-md-4">
-                        <div class="boat-card">
-                            <h5>Sea Ray Cruiser</h5>
-                            <p>Length: 30 ft</p>
-                            <p>Year: 2021</p>
-                            <p>Price: $45,000</p>
-                        </div>
-                    </div>
+                    {{#each boats}}
+                        {{> boat-card}}
+                    {{/each}}
 
                 </div>
 
