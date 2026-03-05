@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const { getDB } = require('../config/db');
-const { type_based_page, allowed_pages } = require('../helpers/utils');
+const { type_based_page, allowed_pages, filtered_boats } = require('../helpers/utils');
 const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
 
 
@@ -30,7 +30,11 @@ router.get('/:page', async(req, res) => {
         return res.status(404).send('Page Not Found');
     }
     
-    const result = await db.collection('boats').find(page).limit(12).toArray();
+    const result = await db.collection('boats').find(page).toArray();
+
+    const { conditions, brand, model, series } = await filtered_boats(result);
+
+    console.log('conditions', brand);
 
     const styles = [...jQueryUIStyle(), ...getStyles()];
     const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];
@@ -40,6 +44,10 @@ router.get('/:page', async(req, res) => {
         title: 'Boats',
         page: page,
         boats: result,
+        conditions: conditions,
+        brand: brand,
+        model: model,
+        series: series,
         styles: styles,
         scripts: scripts
     });

@@ -47,15 +47,11 @@
                         </div>
 
                         <div class="filter-content-wrapper" id="brand-list">
-                            <label>
-                                <input type="checkbox" class="brand-item" value="Yamaha" onclick="handleBrandClick(event)"> Yamaha
-                            </label>
-                            <label>
-                                <input type="checkbox" class="brand-item" value="Bayliner" onclick="handleBrandClick(event)"> Bayliner
-                            </label>
-                            <label>
-                                <input type="checkbox" class="brand-item" value="Sea Ray" onclick="handleBrandClick(event)"> Sea Ray
-                            </label>
+                            {{#each brand}}
+                                <label>
+                                    <input type="checkbox" class="brand-item" value="{{this}}" onclick="handleBrandClick(event)"> {{this}}
+                                </label>
+                            {{/each}}
                         </div>
                     </div>
 
@@ -67,12 +63,11 @@
                         </div>
 
                         <div class="filter-content-wrapper" id="series-list">
-                            <label>
-                                <input type="checkbox" class="series-item" value="Sport" onclick="handleSeriesClick(event)"> Sport
-                            </label>
-                            <label>
-                                <input type="checkbox" class="series-item" value="Cruiser" onclick="handleSeriesClick(event)"> Cruiser
-                            </label>
+                            {{#each series}}
+                                <label>
+                                    <input type="checkbox" class="series-item" value="{{this}}" onclick="handleSeriesClick(event)"> {{this}}
+                                </label>
+                            {{/each}}
                         </div>
                     </div>
 
@@ -84,12 +79,11 @@
                         </div>
 
                         <div class="filter-content-wrapper" id="model-list">
-                            <label>
-                                <input type="checkbox" class="model-item" value="X100" onclick="handleModelClick(event)"> X100
-                            </label>
-                            <label>
-                                <input type="checkbox" class="model-item" value="X200" onclick="handleModelClick(event)"> X200
-                            </label>
+                            {{#each model}}
+                                <label>
+                                    <input type="checkbox" class="model-item" value="{{this}}" onclick="handleModelClick(event)"> {{this}}
+                                </label>
+                            {{/each}}
                         </div>
                     </div>
 
