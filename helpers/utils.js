@@ -1,19 +1,18 @@
 
+const allowed_pages = ['new-boats-for-sale', 'used-boats-for-sale', 'boats-for-sale'];
 
-
-const type_based_page = (condition) => {
-
-    if(condition === 'new-boats-for-sale'){
-        condition = 'New Model';
-    }else if(condition === 'used-boats-for-sale'){
-        condition = 'Used Model';
-    }else if(condition === 'boats-for-sale'){
-        condition = '';
+const type_based_page = (type) => {
+    switch (type) {
+        case 'new-boats-for-sale':
+            return { condition: 'New Model' };
+        case 'used-boats-for-sale':
+            return { condition: 'Pre-Owned' };
+        default:
+            return {};
     }
-
-    return condition;
 };
 
 module.exports = {
-    type_based_page
+    type_based_page,
+    allowed_pages
 }
