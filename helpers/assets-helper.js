@@ -18,7 +18,9 @@ const jQueryUIStyle = () => {
 const getFilter = () => {
     return ['/assets/js/filters.js'];
 }
-
+const getScripts = () =>{
+    return ['/assets/js/custom.js'];
+}
 
 
 module.exports = {
@@ -26,5 +28,6 @@ module.exports = {
     jQueryUIScript,
     jQueryUIStyle,
     getJquery,
-    getFilter
+    getFilter,
+    getScripts
 }

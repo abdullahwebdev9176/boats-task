@@ -3,7 +3,7 @@ const app = express();
 const router = express.Router();
 const { getDB } = require('../config/db');
 const { type_based_page, allowed_pages } = require('../helpers/utils');
-const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter } = require('../helpers/assets-helper');
+const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
 
 
 router.get('/', (req, res) => {
@@ -12,6 +12,13 @@ router.get('/', (req, res) => {
         title: 'Home',
         name: name
     });
+});
+
+router.get('/get-boats', async(req, res) => {
+    let db = getDB();
+
+
+    
 });
 
 router.get('/:page', async(req, res) => {
@@ -25,10 +32,8 @@ router.get('/:page', async(req, res) => {
     
     const result = await db.collection('boats').find(page).limit(12).toArray();
 
-    // console.log(result);
-
     const styles = [...jQueryUIStyle(), ...getStyles()];
-    const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter()];
+    const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];
 
 
     res.render('boats', { 
