@@ -5,6 +5,39 @@ let selectedModel = [];
 let selectedLengthRange = { min: 0, max: 100 };
 let selectedYearRange = { min: 0, max: 100 };
 
+function getPayload() {
+    const payload = {
+        condition: selectedCondition,
+        brand: selectedBrand,
+        series: selectedSeries,
+        model: selectedModel,
+        lengthRange: selectedLengthRange,
+        yearRange: selectedYearRange
+    };
+
+    return payload;
+}
+
+function storeFiltrsInSessionStorage() {
+    const payload = getPayload();
+    sessionStorage.setItem('filters', JSON.stringify(payload));
+}
+
+function loadFilters() {
+    const storedFilters = sessionStorage.getItem('filters');   
+    if (storedFilters) {
+        const filters = JSON.parse(storedFilters);
+        selectedCondition = filters.condition || ['All'];
+        selectedBrand = filters.brand || [];
+        selectedSeries = filters.series || [];
+        selectedModel = filters.model || [];
+        selectedLengthRange = filters.lengthRange || { min: 0, max: 100 };
+        selectedYearRange = filters.yearRange || { min: 0, max: 100 };
+    }
+}
+
+loadFilters();
+
 function handleConditionClick(e) {
     const clickedElement = $(e.target);
     const clickedValue = clickedElement.val();
@@ -31,6 +64,8 @@ function handleConditionClick(e) {
     }
 
     console.log(selectedCondition);
+    getPayload();
+    storeFiltrsInSessionStorage();
 }
 
 function handleBrandClick(e) {
@@ -42,6 +77,8 @@ function handleBrandClick(e) {
     }).get();
 
     console.log(selectedBrand);
+    getPayload();
+    storeFiltrsInSessionStorage();
 }
 
 function handleSeriesClick(e) {
@@ -53,6 +90,8 @@ function handleSeriesClick(e) {
     }).get();
 
     console.log(selectedSeries);
+    getPayload();
+    storeFiltrsInSessionStorage();
 }
 
 function handleModelClick(e) {
@@ -64,6 +103,8 @@ function handleModelClick(e) {
     }).get();
 
     console.log(selectedModel);
+    getPayload();
+    storeFiltrsInSessionStorage();
 }
 
 let minLength = $("#minVal").data("minlength") || 0;
@@ -92,7 +133,11 @@ $("#rangeSlider").slider({
             max: ui.values[1]
         }
 
+        getPayload();
+        storeFiltrsInSessionStorage();
+
     }
+    
 });
 
 $("#yearRangeSlider").slider({
@@ -112,5 +157,8 @@ $("#yearRangeSlider").slider({
             min: ui.values[0],
             max: ui.values[1]
         }
+
+        getPayload();
+        storeFiltrsInSessionStorage();
     }
 });
