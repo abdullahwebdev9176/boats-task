@@ -28,14 +28,11 @@
                                 <input type="checkbox" id="condition-all" value="all" onclick="handleConditionClick(event)">
                                 All
                             </label>
-                            <label>
-                                <input type="checkbox" class="condition-item" value="New" onclick="handleConditionClick(event)">
-                                New
-                            </label>
-                            <label>
-                                <input type="checkbox" class="condition-item" value="Used" onclick="handleConditionClick(event)">
-                                Used
-                            </label>
+                            {{#each conditions}}
+                                <label>
+                                    <input type="checkbox" class="condition-item" value="{{this}}" onclick="handleConditionClick(event)"> {{this}}
+                                </label>
+                            {{/each}}
                         </div>
                     </div>
 

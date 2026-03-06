@@ -24,7 +24,7 @@ function storeFiltrsInSessionStorage() {
 }
 
 function loadFilters() {
-    const storedFilters = sessionStorage.getItem('filters');   
+    const storedFilters = sessionStorage.getItem('filters');
     if (storedFilters) {
         const filters = JSON.parse(storedFilters);
         selectedCondition = filters.condition || ['All'];
@@ -37,6 +37,104 @@ function loadFilters() {
 }
 
 loadFilters();
+selectedFilters();
+
+function selectedFilters() {
+
+    let selectedItems = $('#selected-filters');
+    let filterContnainer = $('#selected-filters-section');
+    let filtersHTML = '';
+
+    selectedCondition.forEach(condition => {
+        filtersHTML += `
+            <li data-type="condition" data-value="${condition}">
+                <span>${condition}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+        selectedCondition.forEach(condition => {
+            $(`.condition-item[value="${condition}"]`).prop('checked', true);
+        });
+
+    });
+
+    selectedBrand.forEach(brand => {
+        filtersHTML += `
+            <li data-type="brand" data-value="${brand}">
+                <span>${brand}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+        selectedBrand.forEach(brand => {
+            $(`.brand-item[value="${brand}"]`).prop('checked', true);
+        });
+
+    });
+
+    selectedModel.forEach(model => {
+        filtersHTML += `
+            <li data-type="model" data-value="${model}">
+                <span>${model}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+        selectedModel.forEach(model => {
+            $(`.model-item[value="${model}"]`).prop('checked', true);
+        });
+
+    });
+
+    selectedSeries.forEach(series => {
+        filtersHTML += `
+            <li data-type="series" data-value="${series}">
+                <span>${series}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+        selectedSeries.forEach(series => {
+            $(`.series-item[value="${series}"]`).prop('checked', true);
+        });
+
+    });
+
+    const minYearDefault = parseInt($("#minYearVal").data("minyear")) || 0;
+    const maxYearDefault = parseInt($("#maxYearVal").data("maxyear")) || 100;
+    
+    if (selectedYearRange.min !== minYearDefault || selectedYearRange.max !== maxYearDefault) {
+        filtersHTML += `
+            <li data-type="year" data-value="${selectedYearRange.min}-${selectedYearRange.max}">
+                <span>Year: ${selectedYearRange.min} - ${selectedYearRange.max}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+    }
+
+    const minLengthDefault = parseInt($("#minVal").data("minlength")) || 0;
+    const maxLengthDefault = parseInt($("#maxVal").data("maxlength")) || 100;
+
+    if(selectedLengthRange.min !== minLengthDefault){
+        console.log('Min Length changed:', selectedLengthRange.min);
+        console.log('Default Min Length:', minLengthDefault);
+
+    }
+    
+    if (selectedLengthRange.min !== minLengthDefault || selectedLengthRange.max !== maxLengthDefault) {
+        filtersHTML += `
+            <li data-type="length" data-value="${selectedLengthRange.min}-${selectedLengthRange.max}">
+                <span>Length: ${selectedLengthRange.min} - ${selectedLengthRange.max}</span>
+                <span class="fa fa-close close-filter"></span>
+            </li>
+        `;
+    }
+
+    if (filtersHTML) {
+        selectedItems.html(filtersHTML);
+        filterContnainer.show();
+    } else {
+        filterContnainer.hide();
+    }
+
+}
 
 function handleConditionClick(e) {
     const clickedElement = $(e.target);
@@ -66,6 +164,7 @@ function handleConditionClick(e) {
     console.log(selectedCondition);
     getPayload();
     storeFiltrsInSessionStorage();
+    selectedFilters();
 }
 
 function handleBrandClick(e) {
@@ -79,6 +178,7 @@ function handleBrandClick(e) {
     console.log(selectedBrand);
     getPayload();
     storeFiltrsInSessionStorage();
+    selectedFilters();
 }
 
 function handleSeriesClick(e) {
@@ -92,6 +192,7 @@ function handleSeriesClick(e) {
     console.log(selectedSeries);
     getPayload();
     storeFiltrsInSessionStorage();
+    selectedFilters();
 }
 
 function handleModelClick(e) {
@@ -105,6 +206,7 @@ function handleModelClick(e) {
     console.log(selectedModel);
     getPayload();
     storeFiltrsInSessionStorage();
+    selectedFilters();
 }
 
 let minLength = $("#minVal").data("minlength") || 0;
@@ -135,9 +237,10 @@ $("#rangeSlider").slider({
 
         getPayload();
         storeFiltrsInSessionStorage();
+        selectedFilters();
 
     }
-    
+
 });
 
 $("#yearRangeSlider").slider({
@@ -160,5 +263,6 @@ $("#yearRangeSlider").slider({
 
         getPayload();
         storeFiltrsInSessionStorage();
+        selectedFilters();
     }
 });
