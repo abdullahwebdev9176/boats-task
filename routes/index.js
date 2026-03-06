@@ -32,9 +32,10 @@ router.get('/:page', async(req, res) => {
     
     const result = await db.collection('boats').find(page).toArray();
 
-    const { conditions, brand, model, series } = await filtered_boats(result);
+    const { conditions, brand, model, series, minLength, maxLength, minYear, maxYear } = await filtered_boats(result);
 
-    console.log('conditions', brand);
+    console.log('length', minLength, maxLength);
+    console.log('year', minYear, maxYear);
 
     const styles = [...jQueryUIStyle(), ...getStyles()];
     const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];

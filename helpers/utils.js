@@ -18,12 +18,23 @@ const filtered_boats = async (result) => {
     const brand = [...new Set(result.map(boat => boat.make))];
     const model = [...new Set(result.map(boat => boat.model))];
     const series = [...new Set(result.map(boat => boat.series))];
-    
+    const length = [...new Set(result.map(boat => boat.length))];
+    const year = [...new Set(result.map(boat => boat.year))];
+
+    const minLength = Math.min(...length);
+    const maxLength = Math.max(...length);
+    const minYear = Math.min(...year);
+    const maxYear = Math.max(...year);
+
     return {
         conditions,
         brand,
         model,
-        series
+        series,
+        minLength,
+        maxLength,
+        minYear,
+        maxYear
     }
 }
 
