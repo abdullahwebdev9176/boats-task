@@ -49,6 +49,10 @@ router.get('/:page', async(req, res) => {
         brand: brand,
         model: model,
         series: series,
+        maxLength: maxLength,
+        minLength: minLength,
+        maxYear: maxYear,
+        minYear: minYear,
         styles: styles,
         scripts: scripts
     });
