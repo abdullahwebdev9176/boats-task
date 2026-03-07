@@ -215,12 +215,6 @@ function handleModelClick(e) {
     selectedFilters();
 }
 
-
-// console.log("Min Length:", minLength);
-// console.log("Max Length:", maxLength);
-// console.log("Min Year:", minYear);
-// console.log("Max Year:", maxYear);
-
 $("#rangeSlider").slider({
     range: true,
     min: minLength,
