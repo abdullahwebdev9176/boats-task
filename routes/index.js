@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const { getDB } = require('../config/db');
-const { type_based_page, allowed_pages, filtered_boats } = require('../helpers/utils');
+const { type_based_page, allowed_pages, filtered_boats, applied_filters } = require('../helpers/utils');
 const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
 
 
@@ -19,28 +19,17 @@ router.all('/get-boats', async(req, res) => {
 
     console.log('Received filter payload:', req.body);
 
-    const { condition, brand, model, series, minLength, maxLength, minYear, maxYear } = req.body;
+    const filterData = await applied_filters(req.body);
     const page = type_based_page(req.body.page);
 
-    let query = {};
+    console.log('query:', filterData);
 
-    if(condition && condition.length ) {
-        query.condition = { $in: condition };
-    }
+    const boats = await db.collection('boats').find(filterData).toArray();
 
-    if(brand && brand.length ) {
-        query.brand = { $in: brand };
-    }
-
-    console.log('query:', query);
-
-    const boats = await db.collection('boats').find(query).toArray();
-
-    console.log('Boats fetched based on filters:', boats);
+    console.log('Boats fetched based on filters:', boats.length);
 
     res.json({ 
         message: 'Boats fetched successfully', 
-        query: query,
         boats: boats
     });
 });

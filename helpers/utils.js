@@ -12,6 +12,39 @@ const type_based_page = (type) => {
     }
 };
 
+const applied_filters =  (filters_body) => {
+
+    const { condition, brand, model, series, minLength, maxLength, minYear, maxYear } = filters_body;
+
+    let query = {};
+
+    if(condition && condition.length ) {
+        query.condition = { $in: condition };
+    }
+
+    if(brand && brand.length ) {
+        query.brand = { $in: brand };
+    }
+
+    if(model && model.length ) {
+        query.model = { $in: model };
+    }
+
+    if(series && series.length ) {
+        query.series = { $in: series };
+    }
+
+    if(minLength !== undefined && maxLength !== undefined) {
+        query.length = { $gte: minLength, $lte: maxLength };
+    }
+
+    if(minYear !== undefined && maxYear !== undefined) {
+        query.year = { $gte: minYear, $lte: maxYear };
+    }
+    
+    return query;
+}
+
 const filtered_boats = async (result) => {
 
     const conditions = [...new Set(result.map(boat => boat.condition))];
@@ -41,5 +74,6 @@ const filtered_boats = async (result) => {
 module.exports = {
     type_based_page,
     allowed_pages,
-    filtered_boats
+    filtered_boats,
+    applied_filters
 }
