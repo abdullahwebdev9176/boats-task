@@ -21,7 +21,7 @@ router.get('/get-boats', async(req, res) => {
     
 });
 
-router.get('/:page', async(req, res) => {
+router.all('/:page', async(req, res) => {
     let db = getDB();
 
     const page = type_based_page(req.params.page);
@@ -43,7 +43,7 @@ router.get('/:page', async(req, res) => {
 
     res.render('boats', { 
         title: 'Boats',
-        page: page,
+        pageUrl: page,
         boats: result,
         conditions: conditions,
         brand: brand,
