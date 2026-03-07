@@ -4,6 +4,7 @@ const router = express.Router();
 const { getDB } = require('../config/db');
 const { type_based_page, allowed_pages, filtered_boats, applied_filters } = require('../helpers/utils');
 const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
+const settings = require('../config/setting.json');
 
 
 router.get('/', (req, res) => {
@@ -45,9 +46,30 @@ router.all('/:page', async (req, res) => {
 
     if (req.query.filter == 'true') {
 
-        const boats = await db.collection('boats').find(filterData).toArray();
+        const filterData = await applied_filters(req.body);
 
-        // console.log('Boats fetched based on filters:', boats);
+        const boat_limit = settings.boat_limit || 12;
+
+        const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
+
+        console.log('Boats fetched based on filters:', boats.length);
+        
+        res.json({
+            message: 'Boats fetched successfully',
+            boats: boats
+        });
+        return;
+    }
+
+    if (req.query.loadMore == 'true') {
+
+        const filterData = await applied_filters(req.body);
+
+        const boat_limit = settings.boat_limit || 12;
+
+        const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
+
+        console.log('Boats fetched based on filters:', boats.length);
         
         res.json({
             message: 'Boats fetched successfully',

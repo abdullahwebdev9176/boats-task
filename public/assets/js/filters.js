@@ -277,7 +277,8 @@ async function fetchBoats() {
         const response = await fetch(`${pageUrl}?filter=true`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'            },
+                'Content-Type': 'application/json'            
+            },
             body: JSON.stringify(payload)
         });
 
