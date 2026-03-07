@@ -171,6 +171,7 @@ function handleConditionClick(e) {
     getPayload();
     storeFiltrsInSessionStorage();
     selectedFilters();
+    fetchBoats();
 }
 
 function handleBrandClick(e) {
@@ -185,6 +186,7 @@ function handleBrandClick(e) {
     getPayload();
     storeFiltrsInSessionStorage();
     selectedFilters();
+    fetchBoats();
 }
 
 function handleSeriesClick(e) {
@@ -199,6 +201,7 @@ function handleSeriesClick(e) {
     getPayload();
     storeFiltrsInSessionStorage();
     selectedFilters();
+    fetchBoats();
 }
 
 function handleModelClick(e) {
@@ -213,6 +216,7 @@ function handleModelClick(e) {
     getPayload();
     storeFiltrsInSessionStorage();
     selectedFilters();
+    fetchBoats();
 }
 
 $("#rangeSlider").slider({
@@ -234,7 +238,7 @@ $("#rangeSlider").slider({
         getPayload();
         storeFiltrsInSessionStorage();
         selectedFilters();
-
+        fetchBoats();
     }
 
 });
@@ -260,5 +264,24 @@ $("#yearRangeSlider").slider({
         getPayload();
         storeFiltrsInSessionStorage();
         selectedFilters();
+        fetchBoats();
     }
 });
+
+
+async function fetchBoats() {
+    const payload = getPayload();
+    try {
+        const response = await fetch('/get-boats', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log('Filtered boats:', data.boats);
+    } catch (error) {
+        console.error('Error fetching boats:', error);
+    }
+}

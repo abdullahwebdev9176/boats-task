@@ -31,7 +31,9 @@ const runFeed = async () => {
             const inventory_images = Object.values(boat.inventory_images ? boat.inventory_images : {});
             const product_images = inventory_images.length > 0 ? inventory_images[0] : '/assets/images/coming-soon-img.jpg';
 
-            
+            const brand = boat.make ? boat.make.trim() : '';
+            const model = boat.model ? boat.model.trim() : '';
+            const series = boat.series ? boat.series.trim() : '';
 
             const boatData = {
                 id: boat.id,
@@ -39,9 +41,9 @@ const runFeed = async () => {
                 condition: boat.condition,
                 product_images: product_images,
                 year: boat.year,
-                make: boat.make,
-                model: boat.model,
-                series: boat.series,
+                brand: brand,
+                model: model,
+                series: series,
                 price: boat.price,
                 description: boat.description,
                 condition: boat.condition,

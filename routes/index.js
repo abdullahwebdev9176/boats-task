@@ -14,11 +14,35 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/get-boats', async(req, res) => {
+router.all('/get-boats', async(req, res) => {
     let db = getDB();
 
+    console.log('Received filter payload:', req.body);
 
-    
+    const { condition, brand, model, series, minLength, maxLength, minYear, maxYear } = req.body;
+    const page = type_based_page(req.body.page);
+
+    let query = {};
+
+    if(condition && condition.length ) {
+        query.condition = { $in: condition };
+    }
+
+    if(brand && brand.length ) {
+        query.brand = { $in: brand };
+    }
+
+    console.log('query:', query);
+
+    const boats = await db.collection('boats').find(query).toArray();
+
+    console.log('Boats fetched based on filters:', boats);
+
+    res.json({ 
+        message: 'Boats fetched successfully', 
+        query: query,
+        boats: boats
+    });
 });
 
 router.all('/:page', async(req, res) => {
@@ -34,8 +58,8 @@ router.all('/:page', async(req, res) => {
 
     const { conditions, brand, model, series, minLength, maxLength, minYear, maxYear } = await filtered_boats(result);
 
-    console.log('length', minLength, maxLength);
-    console.log('year', minYear, maxYear);
+    // console.log('length', minLength, maxLength);
+    // console.log('year', minYear, maxYear);
 
     const styles = [...jQueryUIStyle(), ...getStyles()];
     const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];
