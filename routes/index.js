@@ -8,13 +8,13 @@ const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScrip
 
 router.get('/', (req, res) => {
     const name = 'Muhammad Abdullah';
-    res.render('home', { 
+    res.render('home', {
         title: 'Home',
         name: name
     });
 });
 
-router.all('/get-boats', async(req, res) => {
+router.all('/get-boats', async (req, res) => {
     let db = getDB();
 
     console.log('Received filter payload:', req.body);
@@ -28,21 +28,45 @@ router.all('/get-boats', async(req, res) => {
 
     console.log('Boats fetched based on filters:', boats.length);
 
-    res.json({ 
-        message: 'Boats fetched successfully', 
+    res.json({
+        message: 'Boats fetched successfully',
         boats: boats
     });
 });
 
-router.all('/:page', async(req, res) => {
+router.all('/:page', async (req, res) => {
     let db = getDB();
 
     const page = type_based_page(req.params.page);
 
-    if(!allowed_pages.includes(req.params.page)){
+    if (!allowed_pages.includes(req.params.page)) {
         return res.status(404).send('Page Not Found');
     }
-    
+
+    if (req.query.filter == 'true') {
+
+        const filterData = await applied_filters(req.body)
+
+        console.log('query:', filterData);
+
+        // const finalQuery = { ...page, ...filterData };
+
+        const boats = await db.collection('boats').find(filterData).toArray();
+
+        // console.log('Boats fetched based on filters:', boats);
+        
+        res.json({
+            message: 'Boats fetched successfully',
+            boats: boats
+        });
+        return;
+    }
+
+    // console.log('Final Query:', filterData);
+
+    // const finalQuery = { ...page, ...filterData };
+
+
     const result = await db.collection('boats').find(page).toArray();
 
     const { conditions, brand, model, series, minLength, maxLength, minYear, maxYear } = await filtered_boats(result);
@@ -54,7 +78,7 @@ router.all('/:page', async(req, res) => {
     const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];
 
 
-    res.render('boats', { 
+    res.render('boats', {
         title: 'Boats',
         pageUrl: page,
         boats: result,

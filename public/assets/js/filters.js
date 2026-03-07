@@ -271,8 +271,10 @@ $("#yearRangeSlider").slider({
 
 async function fetchBoats() {
     const payload = getPayload();
+    
+    const pageUrl = window.location.pathname;
     try {
-        const response = await fetch('/get-boats', {
+        const response = await fetch(`${pageUrl}?filter=true`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'            },
@@ -280,7 +282,7 @@ async function fetchBoats() {
         });
 
         const data = await response.json();
-        console.log('Filtered boats:', data.boats);
+        // console.log('Filtered boats:', data.boats);
     } catch (error) {
         console.error('Error fetching boats:', error);
     }
