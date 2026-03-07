@@ -142,7 +142,7 @@ function selectedFilters() {
 
 }
 
-$('.close-filter').on('click', function () {
+$('#selected-filters').on('click', '.close-filter', function () {
 
     console.log('Close filter clicked');
     const filterType = $(this).parent().data('type');
@@ -150,12 +150,16 @@ $('.close-filter').on('click', function () {
 
     if (filterType === 'condition') {
         selectedCondition = selectedCondition.filter(value => value !== filterValue);
+        $(`.condition-item[value="${filterValue}"]`).prop('checked', false);
     } else if (filterType === 'brand') {
         selectedBrand = selectedBrand.filter(value => value !== filterValue);
+        $(`.brand-item[value="${filterValue}"]`).prop('checked', false);
     } else if (filterType === 'series') {
         selectedSeries = selectedSeries.filter(value => value !== filterValue);
+        $(`.series-item[value="${filterValue}"]`).prop('checked', false);
     } else if (filterType === 'model') {
         selectedModel = selectedModel.filter(value => value !== filterValue);
+        $(`.model-item[value="${filterValue}"]`).prop('checked', false);
     } else if (filterType === 'year') {
         selectedYearRange = { min: minYear, max: maxYear };
         $("#yearRangeSlider").slider('values', [minYear, maxYear]);
