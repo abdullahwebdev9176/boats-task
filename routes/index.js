@@ -44,11 +44,11 @@ router.all('/:page', async (req, res) => {
         return res.status(404).send('Page Not Found');
     }
 
+    const boat_limit = settings.boat_limit || 12;
+
     if (req.query.filter == 'true') {
 
         const filterData = await applied_filters(req.body);
-
-        const boat_limit = settings.boat_limit || 12;
 
         const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
 
@@ -64,8 +64,6 @@ router.all('/:page', async (req, res) => {
     if (req.query.loadMore == 'true') {
 
         const filterData = await applied_filters(req.body);
-
-        const boat_limit = settings.boat_limit || 12;
 
         const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
 
@@ -83,9 +81,10 @@ router.all('/:page', async (req, res) => {
     // const finalQuery = { ...page, ...filterData };
 
 
-    const result = await db.collection('boats').find(page).toArray();
+    const result = await db.collection('boats').find(page).limit(boat_limit).toArray();
+    const boats = await db.collection('boats').find(page).toArray();
 
-    const { conditions, brand, model, series, minLength, maxLength, minYear, maxYear } = await filtered_boats(result);
+    const { conditions, brand, model, series, minLength, maxLength, minYear, maxYear } = await filtered_boats(boats);
 
     // console.log('length', minLength, maxLength);
     // console.log('year', minYear, maxYear);

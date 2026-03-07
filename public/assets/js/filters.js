@@ -105,7 +105,7 @@ function selectedFilters() {
 
     const minYearDefault = parseInt($("#minYearVal").data("minyear")) || 0;
     const maxYearDefault = parseInt($("#maxYearVal").data("maxyear")) || 100;
-    
+
     if (selectedYearRange.min !== minYearDefault || selectedYearRange.max !== maxYearDefault) {
         filtersHTML += `
             <li data-type="year" data-value="${selectedYearRange.min}-${selectedYearRange.max}">
@@ -118,12 +118,12 @@ function selectedFilters() {
     const minLengthDefault = parseInt($("#minVal").data("minlength")) || 0;
     const maxLengthDefault = parseInt($("#maxVal").data("maxlength")) || 100;
 
-    if(selectedLengthRange.min !== minLengthDefault){
+    if (selectedLengthRange.min !== minLengthDefault) {
         console.log('Min Length changed:', selectedLengthRange.min);
         console.log('Default Min Length:', minLengthDefault);
 
     }
-    
+
     if (selectedLengthRange.min !== minLengthDefault || selectedLengthRange.max !== maxLengthDefault) {
         filtersHTML += `
             <li data-type="length" data-value="${selectedLengthRange.min}-${selectedLengthRange.max}">
@@ -271,20 +271,50 @@ $("#yearRangeSlider").slider({
 
 async function fetchBoats() {
     const payload = getPayload();
-    
+
     const pageUrl = window.location.pathname;
     try {
         const response = await fetch(`${pageUrl}?filter=true`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'            
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
 
         const data = await response.json();
         // console.log('Filtered boats:', data.boats);
+        renderInventory(data.boats);
     } catch (error) {
         console.error('Error fetching boats:', error);
     }
+}
+
+function renderInventory(boats) {
+    const boatContainer = $('#boat-listings');
+    let boatCardHtml = '';
+
+    $.each(boats, function (index, boat) {
+        boatCardHtml += `
+            <div class="col-lg-4 boat-card">
+                <div class="boats-image">
+                    <a href="/boat-details/${this._id}">
+                        <img src="${this.product_images}" alt="${this.BoatTitle}">
+                    </a>
+                </div>
+                <div class="boat-card-body">
+                    <h3 class="boat-card-title"><a href="/boat-details/${this._id}">${this.BoatTitle}</a></h3>
+
+                    <ul class="card-specs">
+                        ${this.condition ? `<li class="specs-item">${this.condition}</li>` : ''}
+                        ${this.length ? `<li class="specs-item">${this.length}' ft</li>` : ''}
+                    </ul>
+
+                    ${this.price ? `<p class="boat-card-price">Price: ${this.price}</p>` : '<p class="boat-card-price">Call For Price</p>'}
+                </div>
+            </div>
+        `
+    });
+    
+    boatContainer.html(boatCardHtml);
 }

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cron = require('node-cron');
 
-const runFeed = require('../cron/cron-feed');
+const runFeed = require('../routes/boat-feed');
 
 cron.schedule('*/5 * * * *', async() => {
     const result = await runFeed();
