@@ -142,6 +142,38 @@ function selectedFilters() {
 
 }
 
+$('.close-filter').on('click', function () {
+
+    console.log('Close filter clicked');
+    const filterType = $(this).parent().data('type');
+    const filterValue = $(this).parent().data('value');
+
+    if (filterType === 'condition') {
+        selectedCondition = selectedCondition.filter(value => value !== filterValue);
+    } else if (filterType === 'brand') {
+        selectedBrand = selectedBrand.filter(value => value !== filterValue);
+    } else if (filterType === 'series') {
+        selectedSeries = selectedSeries.filter(value => value !== filterValue);
+    } else if (filterType === 'model') {
+        selectedModel = selectedModel.filter(value => value !== filterValue);
+    } else if (filterType === 'year') {
+        selectedYearRange = { min: minYear, max: maxYear };
+        $("#yearRangeSlider").slider('values', [minYear, maxYear]);
+        $("#minYearVal").text(minYear);
+        $("#maxYearVal").text(maxYear);
+    } else if (filterType === 'length') {
+        selectedLengthRange = { min: minLength, max: maxLength };
+        $("#rangeSlider").slider('values', [minLength, maxLength]);
+        $("#minVal").text(minLength);
+        $("#maxVal").text(maxLength);
+    }
+
+    getPayload();
+    storeFiltrsInSessionStorage();
+    selectedFilters();
+    fetchBoats();
+});
+
 function handleConditionClick(e) {
     const clickedElement = $(e.target);
     const clickedValue = clickedElement.val();
@@ -315,6 +347,6 @@ function renderInventory(boats) {
             </div>
         `
     });
-    
+
     boatContainer.html(boatCardHtml);
 }
