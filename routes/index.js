@@ -45,12 +45,6 @@ router.all('/:page', async (req, res) => {
 
     if (req.query.filter == 'true') {
 
-        const filterData = await applied_filters(req.body)
-
-        console.log('query:', filterData);
-
-        // const finalQuery = { ...page, ...filterData };
-
         const boats = await db.collection('boats').find(filterData).toArray();
 
         // console.log('Boats fetched based on filters:', boats);
