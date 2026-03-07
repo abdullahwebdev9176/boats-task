@@ -15,9 +15,9 @@ const type_based_page = (type) => {
 const filtered_boats = async (result) => {
 
     const conditions = [...new Set(result.map(boat => boat.condition))];
-    const brand = [...new Set(result.map(boat => boat.make))];
-    const model = [...new Set(result.map(boat => boat.model))];
-    const series = [...new Set(result.map(boat => boat.series))];
+    const brand = [...new Set(result.map(boat => boat.make.trim()))];
+    const model = [...new Set(result.map(boat => boat.model.trim()))];
+    const series = [...new Set(result.map(boat => boat.series.trim()))];
     const length = [...new Set(result.map(boat => boat.length))];
     const year = [...new Set(result.map(boat => boat.year))];
 
