@@ -319,14 +319,14 @@ async function fetchBoats() {
         });
 
         const data = await response.json();
-        // console.log('Filtered boats:', data.boats);
+        console.log('Filtered boats:', data.boats.length);
         renderInventory(data.boats);
     } catch (error) {
         console.error('Error fetching boats:', error);
     }
 }
 
-function renderInventory(boats) {
+function renderInventory(boats, append = false) {
     const boatContainer = $('#boat-listings');
     let boatCardHtml = '';
 
@@ -352,5 +352,39 @@ function renderInventory(boats) {
         `
     });
 
-    boatContainer.html(boatCardHtml);
+    if (append) {
+        boatContainer.append(boatCardHtml);
+    } else {
+        boatContainer.html(boatCardHtml);
+    }
+
+}
+
+async function loadMoreBoats() {
+
+    const payload = getPayload();
+    const pageUrl = window.location.pathname;
+    const currentPage = parseInt($('#load-more').attr('current-page')) || 1;
+
+    const response = await fetch(`${pageUrl}?loadMore=true&page=${currentPage}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (data.boats.length > 0) {
+
+        renderInventory(data.boats, true);
+
+        $('#load-more').attr('current-page', data.currentPage);
+
+    } else {
+
+        $('#load-more').hide();
+
+    }
 }

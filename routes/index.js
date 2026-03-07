@@ -15,26 +15,6 @@ router.get('/', (req, res) => {
     });
 });
 
-router.all('/get-boats', async (req, res) => {
-    let db = getDB();
-
-    console.log('Received filter payload:', req.body);
-
-    const filterData = await applied_filters(req.body);
-    const page = type_based_page(req.body.page);
-
-    console.log('query:', filterData);
-
-    const boats = await db.collection('boats').find(filterData).toArray();
-
-    console.log('Boats fetched based on filters:', boats.length);
-
-    res.json({
-        message: 'Boats fetched successfully',
-        boats: boats
-    });
-});
-
 router.all('/:page', async (req, res) => {
     let db = getDB();
 
@@ -65,13 +45,19 @@ router.all('/:page', async (req, res) => {
 
         const filterData = await applied_filters(req.body);
 
-        const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
+        const page = parseInt(req.query.page);
+        const boat_skip = page * boat_limit;
+
+        console.log('Load More Request - Page:', page, 'Skip:', boat_skip);
+
+        const boats = await db.collection('boats').find(filterData).skip(boat_skip).limit(boat_limit).toArray();
 
         console.log('Boats fetched based on filters:', boats.length);
         
         res.json({
             message: 'Boats fetched successfully',
-            boats: boats
+            boats: boats,
+            currentPage: page + 1
         });
         return;
     }
@@ -92,6 +78,9 @@ router.all('/:page', async (req, res) => {
     const styles = [...jQueryUIStyle(), ...getStyles()];
     const scripts = [...getJquery(), ...jQueryUIScript(), ...getFilter(), ...getScripts()];
 
+    const boatsCount = boats.length;
+    const totalPages = Math.ceil(boatsCount / boat_limit);
+    let currentPage = 1;
 
     res.render('boats', {
         title: 'Boats',
@@ -105,6 +94,9 @@ router.all('/:page', async (req, res) => {
         minLength: minLength,
         maxYear: maxYear,
         minYear: minYear,
+        totalPages: totalPages,
+        currentPage: currentPage,
+        boatsCount: boatsCount,
         styles: styles,
         scripts: scripts
     });

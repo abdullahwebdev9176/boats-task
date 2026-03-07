@@ -18,7 +18,7 @@ const applied_filters =  (filters_body) => {
 
     let query = {};
 
-    if(condition && condition.length ) {
+    if (condition && condition.length && !condition.includes('All')) {
         query.condition = { $in: condition };
     }
 
