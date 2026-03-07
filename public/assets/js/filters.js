@@ -2,8 +2,14 @@ let selectedCondition = ['All'];
 let selectedBrand = [];
 let selectedSeries = [];
 let selectedModel = [];
-let selectedLengthRange = { min: 0, max: 100 };
-let selectedYearRange = { min: 0, max: 100 };
+
+let minLength = $("#minVal").data("minlength") || 0;
+let maxLength = $("#maxVal").data("maxlength") || 100;
+let minYear = $("#minYearVal").data("minyear") || 0;
+let maxYear = $("#maxYearVal").data("maxyear") || 100;
+
+let selectedLengthRange = { min: minLength, max: maxLength };
+let selectedYearRange = { min: minYear, max: maxYear };
 
 function getPayload() {
     const payload = {
@@ -209,10 +215,6 @@ function handleModelClick(e) {
     selectedFilters();
 }
 
-let minLength = $("#minVal").data("minlength") || 0;
-let maxLength = $("#maxVal").data("maxlength") || 100;
-let minYear = $("#minYearVal").data("minyear") || 0;
-let maxYear = $("#maxYearVal").data("maxyear") || 100;
 
 // console.log("Min Length:", minLength);
 // console.log("Max Length:", maxLength);
