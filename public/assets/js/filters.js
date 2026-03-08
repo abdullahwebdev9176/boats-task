@@ -400,6 +400,7 @@ async function boatSearch(sortValue, searchValue) {
     });
 
     const data = await response.json();
+    $('#boatSearch').val('');
 
     renderInventory(data.boats);
     $('#boat-count').text(`${data.boatsCount} boats found`)
