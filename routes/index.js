@@ -5,6 +5,7 @@ const { getDB } = require('../config/db');
 const { type_based_page, allowed_pages, filtered_boats, applied_filters } = require('../helpers/utils');
 const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
 const settings = require('../config/setting.json');
+const { ObjectId } = require('mongodb');
 
 
 router.get('/', (req, res) => {
@@ -103,6 +104,19 @@ router.all('/:page', async (req, res) => {
         boatsCount: boatsCount,
         styles: styles,
         scripts: scripts
+    });
+});
+
+router.get('/boat-details/:id', async(req, res) => {
+    let db = getDB();
+
+    const result = await db.collection('boats').findOne({ _id: new ObjectId(req.params.id) });
+
+    console.log('Boat Details Request - ID:', result);
+
+    res.render('boat-details', {
+        title: 'Boat Details',
+        boatTitle: result.BoatTitle
     });
 });
 
