@@ -387,26 +387,36 @@ async function loadMoreBoats() {
     }
 }
 
-$('#boatSearch').on('keydown', async function(e){
+let searchValue = '';
+let sortValue = '';
+
+async function boatSearch(sortValue, searchValue) {
+    const response = await fetch(`/boat-search`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ searchValue, sortValue })
+    });
+
+    const data = await response.json();
+
+    renderInventory(data.boats);
+    $('#boat-count').text(`${data.boatsCount} boats found`)
+}
+$('#boatSearch').on('keydown', async function (e) {
 
     if (e.key === 'Enter') {
+        searchValue = $(this).val();
+        console.log('Selected boat search option:', searchValue);
 
-        const selectedValue = $(this).val();
-        console.log('Selected boat search option:', selectedValue);
-
-        const response = await fetch(`/boat-search`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ search: selectedValue })
-        });
-
-        const data = await response.json();
-
-        renderInventory(data.boats);
-        $('#boat-count').text(`${data.boatsCount} boats found`);
-
+        await boatSearch(sortValue, searchValue);
     }
 
+});
+
+$('#sortBy').on('change', async function (e) {
+    sortValue = $(this).val();
+    console.log('Selected sort option:', sortValue);
+    await boatSearch(sortValue, searchValue);
 });

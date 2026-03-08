@@ -12,7 +12,7 @@ const type_based_page = (type) => {
     }
 };
 
-const applied_filters =  (filters_body) => {
+const applied_filters = (filters_body) => {
 
     const { condition, brand, model, series, minLength, maxLength, minYear, maxYear } = filters_body;
 
@@ -22,26 +22,26 @@ const applied_filters =  (filters_body) => {
         query.condition = { $in: condition };
     }
 
-    if(brand && brand.length ) {
+    if (brand && brand.length) {
         query.brand = { $in: brand };
     }
 
-    if(model && model.length ) {
+    if (model && model.length) {
         query.model = { $in: model };
     }
 
-    if(series && series.length ) {
+    if (series && series.length) {
         query.series = { $in: series };
     }
 
-    if(minLength !== undefined && maxLength !== undefined) {
+    if (minLength !== undefined && maxLength !== undefined) {
         query.length = { $gte: minLength, $lte: maxLength };
     }
 
-    if(minYear !== undefined && maxYear !== undefined) {
+    if (minYear !== undefined && maxYear !== undefined) {
         query.year = { $gte: minYear, $lte: maxYear };
     }
-    
+
     return query;
 }
 
@@ -71,9 +71,29 @@ const filtered_boats = async (result) => {
     }
 }
 
+const sortOptions = (sortValue) => {
+    switch (sortValue) {
+        case 'price_low_high':
+            return { price: 1 };
+
+        case 'price_high_low':
+            return { price: -1 };
+
+        case 'length_low_high':
+            return { length: 1 };
+
+        case 'length_high_low':
+            return { length: -1 };
+
+        default:
+            return {};
+    }
+};
+
 module.exports = {
     type_based_page,
     allowed_pages,
     filtered_boats,
-    applied_filters
+    applied_filters,
+    sortOptions
 }

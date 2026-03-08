@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const { getDB } = require('../config/db');
-const { type_based_page, allowed_pages, filtered_boats, applied_filters } = require('../helpers/utils');
+const { type_based_page, allowed_pages, filtered_boats, applied_filters, sortOptions } = require('../helpers/utils');
 const { getStyles, jQueryUIStyle, getJquery, jQueryUIScript, getFilter, getScripts } = require('../helpers/assets-helper');
 const settings = require('../config/setting.json');
 const { ObjectId } = require('mongodb');
@@ -17,32 +17,38 @@ router.get('/', (req, res) => {
 });
 
 router.all('/boat-search', async (req, res) => {
+
     let db = getDB();
+
+    const { searchValue, sortValue } = req.body;
 
     const limit = settings.boat_limit || 12;
 
-    const boat_search = await db.collection('boats').find({
-        BoatTitle: { $regex: req.body.search, $options: 'i' }
-    }).limit(limit).toArray();
+    let searchQuery = {};
+    
+    if (searchValue) {
+        searchQuery = {
+            BoatTitle: { $regex: searchValue, $options: 'i' }
+        };
+    }
 
-    const search_result = await db.collection('boats').find({
-        BoatTitle: { $regex: req.body.search, $options: 'i' }
-    }).toArray();
+    const sortOptionsQuery = sortOptions(sortValue);
 
-    const totalboats = search_result.length;
+    const boats = await db.collection('boats').find(searchQuery).sort(sortOptionsQuery).limit(limit).toArray();
+
+    const totalboats = await db.collection('boats').find(searchQuery).sort(sortOptionsQuery).toArray();
 
     const totalPages = Math.ceil(totalboats / limit);
-    let currentPage = 1;
 
     res.json({
         message: 'Boat search results',
-        boats: boat_search,
-        totalPages: totalPages,
+        boats: boats,
         boatsCount: totalboats,
-        currentPage: currentPage
+        totalPages: totalPages,
+        currentPage: 1
     });
 
-})
+});
 
 router.all('/:page', async (req, res) => {
     let db = getDB();
