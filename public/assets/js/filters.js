@@ -386,3 +386,27 @@ async function loadMoreBoats() {
         $('#load-more').hide();
     }
 }
+
+$('#boatSearch').on('keydown', async function(e){
+
+    if (e.key === 'Enter') {
+
+        const selectedValue = $(this).val();
+        console.log('Selected boat search option:', selectedValue);
+
+        const response = await fetch(`/boat-search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ search: selectedValue })
+        });
+
+        const data = await response.json();
+
+        renderInventory(data.boats);
+        $('#boat-count').text(`${data.boatsCount} boats found`);
+
+    }
+
+});

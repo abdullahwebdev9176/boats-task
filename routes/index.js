@@ -16,6 +16,34 @@ router.get('/', (req, res) => {
     });
 });
 
+router.all('/boat-search', async (req, res) => {
+    let db = getDB();
+
+    const limit = settings.boat_limit || 12;
+
+    const boat_search = await db.collection('boats').find({
+        BoatTitle: { $regex: req.body.search, $options: 'i' }
+    }).limit(limit).toArray();
+
+    const search_result = await db.collection('boats').find({
+        BoatTitle: { $regex: req.body.search, $options: 'i' }
+    }).toArray();
+
+    const totalboats = search_result.length;
+
+    const totalPages = Math.ceil(totalboats / limit);
+    let currentPage = 1;
+
+    res.json({
+        message: 'Boat search results',
+        boats: boat_search,
+        totalPages: totalPages,
+        boatsCount: totalboats,
+        currentPage: currentPage
+    });
+
+})
+
 router.all('/:page', async (req, res) => {
     let db = getDB();
 
@@ -35,7 +63,7 @@ router.all('/:page', async (req, res) => {
         const boatsCount = await db.collection('boats').find(filterData).toArray();
 
         console.log('Boats fetched based on filters:', boats.length);
-        
+
         res.json({
             message: 'Boats fetched successfully',
             boats: boats,
@@ -56,7 +84,7 @@ router.all('/:page', async (req, res) => {
         const boats = await db.collection('boats').find(filterData).skip(boat_skip).limit(boat_limit).toArray();
 
         console.log('Boats fetched based on filters:', boats.length);
-        
+
         res.json({
             message: 'Boats fetched successfully',
             boats: boats,
@@ -107,12 +135,12 @@ router.all('/:page', async (req, res) => {
     });
 });
 
-router.get('/boat-details/:id', async(req, res) => {
+router.get('/boat-details/:id', async (req, res) => {
     let db = getDB();
 
     const result = await db.collection('boats').findOne({ _id: new ObjectId(req.params.id) });
 
-    console.log('Boat Details Request - ID:', result);
+    // console.log('Boat Details Request - ID:', result);
 
     res.render('boat-details', {
         title: 'Boat Details',
