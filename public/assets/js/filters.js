@@ -104,6 +104,9 @@ function loadFilters() {
 
 loadFilters();
 selectedFilters();
+if(window.location.search){
+    fetchBoats();
+}
 
 function selectedFilters() {
 
