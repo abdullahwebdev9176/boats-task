@@ -43,7 +43,7 @@ router.all('/boat-search', async (req, res) => {
     res.json({
         message: 'Boat search results',
         boats: boats,
-        boatsCount: totalboats,
+        boatsCount: totalboats.length,
         totalPages: totalPages,
         currentPage: 1
     });
