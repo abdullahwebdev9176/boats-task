@@ -24,12 +24,72 @@ function getPayload() {
     return payload;
 }
 
+function urlSync() {
+    const payload = getPayload();
+    const params = new URLSearchParams();
+
+    console.log('Abdullah params',params);
+
+    if (payload.condition && payload.condition.length && !payload.condition.includes('All')) {
+        params.set('condition', payload.condition.join(','));
+    }
+
+    if (payload.brand && payload.brand.length) {
+        params.set('brand', payload.brand.join(','));
+    }
+
+    if (payload.series && payload.series.length) {
+        params.set('series', payload.series.join(','));
+    }
+
+    if (payload.model && payload.model.length) {
+        params.set('model', payload.model.join(','));
+    }
+
+    const minLengthDefault = parseInt($("#minVal").data("minlength")) || 0;
+    const maxLengthDefault = parseInt($("#maxVal").data("maxlength")) || 100;
+    if (payload.lengthRange.min !== minLengthDefault || payload.lengthRange.max !== maxLengthDefault) {
+        params.set('length', `${payload.lengthRange.min}-${payload.lengthRange.max}`);
+    }
+
+    const minYearDefault = parseInt($("#minYearVal").data("minyear")) || 0;
+    const maxYearDefault = parseInt($("#maxYearVal").data("maxyear")) || 100;
+    if (payload.yearRange.min !== minYearDefault || payload.yearRange.max !== maxYearDefault) {
+        params.set('year', `${payload.yearRange.min}-${payload.yearRange.max}`);
+    }
+
+    const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+}
+
 function storeFiltrsInSessionStorage() {
     const payload = getPayload();
     sessionStorage.setItem('filters', JSON.stringify(payload));
+    urlSync();
 }
 
 function loadFilters() {
+    
+    const params = new URLSearchParams(window.location.search);
+    
+    if (params.has('condition') || params.has('brand') || params.has('series') || params.has('model') || params.has('length') || params.has('year')) {
+        selectedCondition = params.get('condition') ? params.get('condition').split(',') : ['All'];
+        selectedBrand = params.get('brand') ? params.get('brand').split(',') : [];
+        selectedSeries = params.get('series') ? params.get('series').split(',') : [];
+        selectedModel = params.get('model') ? params.get('model').split(',') : [];
+        
+        if (params.has('length')) {
+            const range = params.get('length').split('-');
+            selectedLengthRange = { min: parseInt(range[0]), max: parseInt(range[1]) };
+        }
+        
+        if (params.has('year')) {
+            const range = params.get('year').split('-');
+            selectedYearRange = { min: parseInt(range[0]), max: parseInt(range[1]) };
+        }
+        return;
+    }
+
     const storedFilters = sessionStorage.getItem('filters');
     if (storedFilters) {
         const filters = JSON.parse(storedFilters);
