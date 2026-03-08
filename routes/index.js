@@ -31,12 +31,14 @@ router.all('/:page', async (req, res) => {
         const filterData = await applied_filters(req.body);
 
         const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
+        const boatsCount = await db.collection('boats').find(filterData).toArray();
 
         console.log('Boats fetched based on filters:', boats.length);
         
         res.json({
             message: 'Boats fetched successfully',
-            boats: boats
+            boats: boats,
+            boatsCount: boatsCount.length
         });
         return;
     }
@@ -82,6 +84,8 @@ router.all('/:page', async (req, res) => {
     const totalPages = Math.ceil(boatsCount / boat_limit);
     let currentPage = 1;
 
+    const seriesFilter = series.filter(item => item !== '');
+
     res.render('boats', {
         title: 'Boats',
         pageUrl: page,
@@ -89,7 +93,7 @@ router.all('/:page', async (req, res) => {
         conditions: conditions,
         brand: brand,
         model: model,
-        series: series,
+        series: seriesFilter,
         maxLength: maxLength,
         minLength: minLength,
         maxYear: maxYear,

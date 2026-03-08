@@ -321,6 +321,7 @@ async function fetchBoats() {
         const data = await response.json();
         console.log('Filtered boats:', data.boats.length);
         renderInventory(data.boats);
+        $('#boat-count').text(`${data.boatsCount} boats found`);
     } catch (error) {
         console.error('Error fetching boats:', error);
     }
@@ -376,15 +377,12 @@ async function loadMoreBoats() {
 
     const data = await response.json();
 
-    if (data.boats.length > 0) {
+    console.log('Load more boats:', data.boats.length);
 
-        renderInventory(data.boats, true);
+    renderInventory(data.boats, true);
+    $('#load-more').attr('current-page', data.currentPage);
 
-        $('#load-more').attr('current-page', data.currentPage);
-
-    } else {
-
+    if (data.boats.length < 12) {
         $('#load-more').hide();
-
     }
 }
