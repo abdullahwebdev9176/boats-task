@@ -46,7 +46,6 @@ const runFeed = async () => {
                 series: series,
                 price: boat.price,
                 description: boat.description,
-                condition: boat.condition,
                 stock_number: boat.stock_number,
                 class: boat.class,
                 length: boat.length,
@@ -55,15 +54,15 @@ const runFeed = async () => {
                 boat_images: inventory_images
             }
 
-            if(boat.sale_status.toLowerCase().includes('sold')) {
+            if (boat.sale_status.toLowerCase().includes('sold')) {
                 soldBoatsArray.push(boatData);
-            }else {
+            } else {
                 boatsArray.push(boatData);
             }
         }
 
-        console.log(boatsArray.length);
-        console.log(soldBoatsArray.length);
+        // console.log(boatsArray.length);
+        // console.log(soldBoatsArray.length);
 
         const db = getDB();
 
@@ -91,4 +90,4 @@ router.get('/run-feed', async (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports = { router, runFeed };

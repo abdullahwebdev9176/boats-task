@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const cron = require('node-cron');
+const { runFeed } = require('../routes/boat-feed');
 
-const runFeed = require('../routes/boat-feed');
-
-cron.schedule('*/5 * * * *', async() => {
+cron.schedule('*/5 * * * *', async () => {
     const result = await runFeed();
-  console.log('Running cron job to update feed data, result:', result.inventory.length, 'boats and', result.soldBoats.length, 'sold boats');
+    console.log('Running cron job to update feed data, result:', result.boatsArray.length, 'boats and', result.soldBoatsArray.length, 'sold boats');
 });
 
 
-module.exports = router;
+module.exports = router;  
