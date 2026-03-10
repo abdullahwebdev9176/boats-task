@@ -24,7 +24,7 @@ function getPayload() {
     return payload;
 }
 
-function urlSync() {
+function urlSync(returnParams = false) {
     const payload = getPayload();
     const params = new URLSearchParams();
 
@@ -56,6 +56,11 @@ function urlSync() {
     const maxYearDefault = parseInt($("#maxYearVal").data("maxyear")) || 100;
     if (payload.yearRange.min !== minYearDefault || payload.yearRange.max !== maxYearDefault) {
         params.set('year', `${payload.yearRange.min}-${payload.yearRange.max}`);
+    }
+
+    if (returnParams) {
+        params.set('filter', 'true');
+        return params;
     }
 
     const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
@@ -369,16 +374,12 @@ $("#yearRangeSlider").slider({
 
 
 async function fetchBoats() {
-    const payload = getPayload();
-
     const pageUrl = window.location.pathname;
+    const params = urlSync(true);
+    
     try {
-        const response = await fetch(`${pageUrl}?filter=true`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+        const response = await fetch(`${pageUrl}?${params.toString()}`, {
+            method: 'GET',
         });
 
         const data = await response.json();

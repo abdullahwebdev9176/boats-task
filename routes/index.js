@@ -61,9 +61,13 @@ router.all('/:page', async (req, res) => {
 
     const boat_limit = settings.boat_limit || 12;
 
+        console.log('filterData', req.query);
+
+
     if (req.query.filter == 'true') {
 
-        const filterData = await applied_filters(req.body);
+        const filterData = await applied_filters(req.query);
+
 
         const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
         const boatsCount = await db.collection('boats').find(filterData).toArray();
@@ -80,7 +84,7 @@ router.all('/:page', async (req, res) => {
 
     if (req.query.loadMore == 'true') {
 
-        const filterData = await applied_filters(req.body);
+        const filterData = await applied_filters(req.query);
 
         const page = parseInt(req.query.page);
         const boat_skip = page * boat_limit;

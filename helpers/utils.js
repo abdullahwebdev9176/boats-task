@@ -19,19 +19,19 @@ const applied_filters = (filters_body) => {
     let query = {};
 
     if (condition && condition.length && !condition.includes('All')) {
-        query.condition = { $in: condition };
+        query.condition = { $in: condition.split(',') };
     }
 
     if (brand && brand.length) {
-        query.brand = { $in: brand };
+        query.brand = { $in: brand.split(',') };
     }
 
     if (model && model.length) {
-        query.model = { $in: model };
+        query.model = { $in: model.split(',') };
     }
 
     if (series && series.length) {
-        query.series = { $in: series };
+        query.series = { $in: series.split(',') };
     }
 
     if (minLength !== undefined && maxLength !== undefined) {
