@@ -24,6 +24,15 @@ function getPayload() {
     return payload;
 }
 
+
+let updateFilterStatus = false;
+
+function wantToUpdateFilters(){
+    updateFilterStatus = true;
+}
+
+
+
 function urlSync(returnParams = false) {
     const payload = getPayload();
     const params = new URLSearchParams();
@@ -276,6 +285,7 @@ function handleConditionClick(e) {
     storeFiltrsInSessionStorage();
     selectedFilters();
     fetchBoats();
+    // wantToUpdateFilters();
 }
 
 function handleBrandClick(e) {
@@ -291,6 +301,7 @@ function handleBrandClick(e) {
     storeFiltrsInSessionStorage();
     selectedFilters();
     fetchBoats();
+    // wantToUpdateFilters();
 }
 
 function handleSeriesClick(e) {
@@ -385,7 +396,12 @@ async function fetchBoats() {
         const data = await response.json();
         console.log('Filtered boats:', data);
         renderInventory(data.boats);
-        updateFilters(data.availableFilters);
+
+        if(updateFilterStatus){
+            updateFilters(data.availableFilters);
+            updateFilterStatus = false;
+        }
+        
         $('#boat-count').text(`${data.boatsCount} boats found`);
     } catch (error) {
         console.error('Error fetching boats:', error);
@@ -395,17 +411,25 @@ async function fetchBoats() {
 function updateFilters(filters) {
     const seriesContainer = $('#series-list');
     const modelContainer = $('#model-list');
+    // const brandContainer = $('#brand-list');
+    // const conditionContainer = $('#conditions-list');
 
     seriesContainer.html('');
     modelContainer.html('');
+    // brandContainer.html('');
+    // conditionContainer.html('');
 
     console.log('filters', filters);
 
     const series = [...new Set(filters.map((items)=> items.series).filter((item)=> item !== ''))];
     const models = [...new Set(filters.map((items)=> items.model).filter((item)=> item !== ''))];
+    // const brands = [...new Set(filters.map((items)=> items.brand).filter((item)=> item !== ''))];
+    // const conditions = [...new Set(filters.map((items)=> items.condition).filter((item)=> item !== ''))];
 
     console.log('series', series);
     console.log('models', models);
+    // console.log('brands', brands);
+    // console.log('conditions', conditions);
 
     $.each(series, function (index, boat) {
 
@@ -424,6 +448,24 @@ function updateFilters(filters) {
             </label>
         `);
     });
+
+    // $.each(conditions, function (index, condition) {
+
+    //     conditionContainer.append(`
+    //          <label>
+    //             <input type="checkbox" class="condition-item" value="${condition}" onclick="handleConditionClick(event)"> ${condition}
+    //         </label>
+    //     `);
+    // });
+
+    // $.each(brands, function (index, brand) {
+
+    //     brandContainer.append(`
+    //         <label>
+    //             <input type="checkbox" class="brand-item" value="${brand}" onclick="handleBrandClick(event)"> ${brand}  
+    //         </label>
+    //     `);
+    // });
 }   
 
 function renderInventory(boats, append = false) {
