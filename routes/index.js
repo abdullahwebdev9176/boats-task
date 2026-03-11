@@ -79,6 +79,7 @@ router.all('/:page', async (req, res) => {
         res.json({
             message: 'Boats fetched successfully',
             boats: boats,
+            availableFilters:boatsCount,
             boatsCount: boatsCount.length
         });
         return;

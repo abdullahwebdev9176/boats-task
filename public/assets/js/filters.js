@@ -383,13 +383,48 @@ async function fetchBoats() {
         });
 
         const data = await response.json();
-        console.log('Filtered boats:', data.boats.length);
+        console.log('Filtered boats:', data);
         renderInventory(data.boats);
+        updateFilters(data.availableFilters);
         $('#boat-count').text(`${data.boatsCount} boats found`);
     } catch (error) {
         console.error('Error fetching boats:', error);
     }
 }
+
+function updateFilters(filters) {
+    const seriesContainer = $('#series-list');
+    const modelContainer = $('#model-list');
+
+    seriesContainer.html('');
+    modelContainer.html('');
+
+    console.log('filters', filters);
+
+    const series = [...new Set(filters.map((items)=> items.series).filter((item)=> item !== ''))];
+    const models = [...new Set(filters.map((items)=> items.model).filter((item)=> item !== ''))];
+
+    console.log('series', series);
+    console.log('models', models);
+
+    $.each(series, function (index, boat) {
+
+        seriesContainer.append(`
+            <label>
+                <input type="checkbox" class="series-item" value="${boat}" onclick="handleboatClick(event)"> ${boat}
+            </label>
+        `);
+    });
+
+    $.each(models, function (index, model) {
+
+        modelContainer.append(`
+            <label>
+                <input type="checkbox" class="model-item" value="${model}" onclick="handleModelClick(event)"> ${model}
+            </label>
+        `);
+    });
+}   
 
 function renderInventory(boats, append = false) {
     const boatContainer = $('#boat-listings');
@@ -427,7 +462,7 @@ function renderInventory(boats, append = false) {
 
 async function loadMoreBoats() {
 
-    const params = urlSync(true); 
+    const params = urlSync(true);
     const pageUrl = window.location.pathname;
     const currentPage = parseInt($('#load-more').attr('current-page')) || 1;
 
