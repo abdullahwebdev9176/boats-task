@@ -66,13 +66,15 @@ router.all('/:page', async (req, res) => {
 
     if (req.query.filter == 'true') {
 
+        console.log('Filter request')
+
         const filterData = await applied_filters(req.query);
 
 
         const boats = await db.collection('boats').find(filterData).limit(boat_limit).toArray();
         const boatsCount = await db.collection('boats').find(filterData).toArray();
 
-        console.log('Boats fetched based on filters:', boats.length);
+        // console.log('Boats fetched based on filters:', boats.length);
 
         res.json({
             message: 'Boats fetched successfully',
@@ -93,12 +95,13 @@ router.all('/:page', async (req, res) => {
 
         const boats = await db.collection('boats').find(filterData).skip(boat_skip).limit(boat_limit).toArray();
 
-        console.log('Boats fetched based on filters:', boats.length);
+        // console.log('Boats fetched based on filters:', boats.length);
+        let currentPage = page + 1;
 
         res.json({
             message: 'Boats fetched successfully',
             boats: boats,
-            currentPage: page + 1
+            currentPage: currentPage
         });
         return;
     }

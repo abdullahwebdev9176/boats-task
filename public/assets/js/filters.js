@@ -427,27 +427,32 @@ function renderInventory(boats, append = false) {
 
 async function loadMoreBoats() {
 
-    const payload = getPayload();
+    const params = urlSync(true); 
     const pageUrl = window.location.pathname;
     const currentPage = parseInt($('#load-more').attr('current-page')) || 1;
 
-    const response = await fetch(`${pageUrl}?loadMore=true&page=${currentPage}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    });
+    params.set('loadMore', 'true');
+    params.set('page', currentPage);
+    params.set('filter', 'false')
 
-    const data = await response.json();
+    try {
+        const response = await fetch(`${pageUrl}?${params.toString()}`, {
+            method: 'GET'
+        });
 
-    console.log('Load more boats:', data.boats.length);
+        const data = await response.json();
 
-    renderInventory(data.boats, true);
-    $('#load-more').attr('current-page', data.currentPage);
+        console.log('Load more boats:', data.boats.length);
 
-    if (data.boats.length < 12) {
-        $('#load-more').hide();
+        renderInventory(data.boats, true);
+        $('#load-more').attr('current-page', data.currentPage);
+
+        if (data.boats.length < 12) {
+            $('#load-more').hide();
+        }
+
+    } catch (error) {
+        console.error('Error loading more boats:', error);
     }
 }
 
